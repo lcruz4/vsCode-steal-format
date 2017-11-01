@@ -15,10 +15,12 @@
     ],
     "main": "./extension",
     "contributes": {
-        "commands": [{
-            "command": "extension.stealFormat",
-            "title": "Steal Format"
-        }]
+        "commands": [
+            {
+                "command": "extension.stealFormat",
+                "title": "Steal Format"
+            }
+        ]
     },
     "scripts": {
         "postinstall": "node ./node_modules/vscode/bin/install",
@@ -31,5 +33,8 @@
         "eslint": "^4.6.1",
         "@types/node": "^7.0.0",
         "@types/mocha": "^2.2.42"
+    },
+    "dependencies": {
+        "copy-paste": "^1.3.0"
     }
 }
