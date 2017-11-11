@@ -84,10 +84,15 @@ function activate(context) {
             currentPath = currentPath.match(/src.*/)[0];
             let currentPathArr = currentPath.split("\\");
             let currentPathArrLen = currentPathArr.length;
-            let requirePathArrLen = currentPathArr.length;
+            let requirePathArrLen = requirePathArr.length;
             let requirePathPart = requirePathArr[0];
             let currentPathPart = currentPathArr[0];
             let selection = editor.selection;
+
+            if (!/\.js$/.test(requirePathArr[requirePathArrLen - 1])) {
+                requirePathArr.push(requirePathArr[requirePathArrLen - 1] + ".js");
+                requirePathArrLen++;
+            }
             
             for (let i = 0; i < currentPathArrLen && requirePathPart === currentPathPart; i++) {
                 requirePathPart = requirePathArr[i];
