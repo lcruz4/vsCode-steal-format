@@ -35,18 +35,95 @@ function activate(context) {
         if (inputText) {
             retText = `"${inputText.replace(/.*src/, "src").replace(/\\/g, "/")}",`;
             editor.edit(function (editBuilder) {
-              editBuilder.delete(editor.selection);
+                editBuilder.delete(editor.selection);
             }).then(function () {
-              editor.edit(function (editBuilder) {
-                editBuilder.insert(editor.selection.start, retText);
-              });
+                editor.edit(function (editBuilder) {
+                    editBuilder.insert(editor.selection.start, retText);
+                });
             });
         } else {
             vscode.window.showErrorMessage("Please copy or select a valid path.");
         }
     });
 
-    context.subscriptions.push(stealFormat);
+    let stealToWebpack = vscode.commands.registerCommand('extension.stealToWebpack', function () {
+        let editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            return; // No open text editor
+        }
+        
+        let clipboard = ncp.paste();
+        let currentPath = editor.document.uri.fsPath;
+        let linePathTest = /\"(src[\w\.\/]+)\"/;
+        let copiedPathTest = /src[\w\.\\]+/;
+        let requirePath = "";
+        let retText = "";
+        let requirePathArr = [];
+        let lineSelectionObj = {};
+        let range;
+        let lineSelection;
+
+        lineSelectionObj.line = editor.selection.active.line;
+        range = new vscode.Range(lineSelectionObj.line, 0, lineSelectionObj.line, 999)
+        lineSelection = editor.document.getText(range);
+
+        if (linePathTest.test(lineSelection)) {
+            let requirePathMatch = lineSelection.match(linePathTest);
+
+            requirePath = requirePathMatch[1];
+            requirePathArr = requirePath.split("\/");
+            lineSelectionObj.useLineSelection = true;
+            lineSelectionObj.pathStart = requirePathMatch.index;
+            lineSelectionObj.pathEnd = lineSelectionObj.pathStart + requirePath.length + 2;
+        } else if (copiedPathTest.test(clipboard)) {
+            requirePath = clipboard.match(copiedPathTest)[0];
+            requirePathArr = requirePath.split("\\");
+        }
+
+        if (requirePath && /src.*/.test(currentPath)) {
+            currentPath = currentPath.match(/src.*/)[0];
+            let currentPathArr = currentPath.split("\\");
+            let currentPathArrLen = currentPathArr.length;
+            let requirePathArrLen = currentPathArr.length;
+            let requirePathPart = requirePathArr[0];
+            let currentPathPart = currentPathArr[0];
+            let selection = editor.selection;
+            
+            for (let i = 0; i < currentPathArrLen && requirePathPart === currentPathPart; i++) {
+                requirePathPart = requirePathArr[i];
+                currentPathPart = currentPathArr[i];
+            
+                if (requirePathPart !== currentPathPart) {
+                    let repeats = currentPathArrLen - i - 1;
+                    let pre = repeats > 1 ? "../".repeat(repeats) : "./";
+                    retText = "\"" + pre + requirePathArr.slice(i, requirePathArr.length).join("/") + "\"";
+                }
+            }
+
+            if (lineSelectionObj.useLineSelection) {
+                selection = new vscode.Selection(
+                    lineSelectionObj.line,
+                    lineSelectionObj.pathStart,
+                    lineSelectionObj.line,
+                    lineSelectionObj.pathEnd
+                );
+            }
+
+            editor.edit(function (editBuilder) {
+                if (lineSelectionObj.useLineSelection) {
+                    editBuilder.delete(selection);
+                }
+            }).then(function () {
+                editor.edit(function (editBuilder) {
+                    editBuilder.insert(selection.start, retText);
+                });
+            });
+        } else {
+            vscode.window.showErrorMessage("Please copy or select a valid path.");
+        }
+    });
+
+    context.subscriptions.concat([stealFormat, stealToWebpack]);
 }
 exports.activate = activate;
 

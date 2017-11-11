@@ -1,9 +1,12 @@
+# Install instructions
 clone https://github.com/lcruz4/vsCode-steal-format into %USERPROFILE%\.vscode\extensions
 cd into vsCode-steal-format
 and run npm install
 
-This is an extension that allows you to paste a copied path (in the format that vsCode copies it) and paste it in the format that steal likes it.
+This extension allows you to convert steals into webpack requires. The default key binding is alt+s
 
-Just run the extension (Steal Format) when you have something on the clipboard
+![alt text](https://github.com/lcruz4/vsCode-steal-format/raw/master/readme_images/gif1.gif)
 
-you can also add it to your keybindings by opening key bindings and looking for steal format
+![alt text](https://github.com/lcruz4/vsCode-steal-format/raw/master/readme_images/gif2.gif)
+
+![alt text](https://github.com/lcruz4/vsCode-steal-format/raw/master/readme_images/gif3.gif)
