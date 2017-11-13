@@ -27,3 +27,4 @@ In this case it will just paste the path formatted and wrapped in quotes.
 
 11/13/2017
 * Fixed bug with non .js formats
+* Fixed bug when file is only 1 folder back

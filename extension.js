@@ -100,7 +100,7 @@ function activate(context) {
             
                 if (requirePathPart !== currentPathPart) {
                     let repeats = currentPathArrLen - i - 1;
-                    let pre = repeats > 1 ? "../".repeat(repeats) : "./";
+                    let pre = repeats > 0 ? "../".repeat(repeats) : "./";
                     retText = "\"" + pre + requirePathArr.slice(i, requirePathArr.length).join("/") + "\"";
                 }
             }
