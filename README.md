@@ -24,3 +24,6 @@ In this case it will just paste the path formatted and wrapped in quotes.
 ## Changelog
 11/11/2017
 * Added support for folder steal conversions i.e. "src/folder" => "./folder/folder.js"
+
+11/13/2017
+* Fixed bug with non .js formats
