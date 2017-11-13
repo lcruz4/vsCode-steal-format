@@ -89,7 +89,7 @@ function activate(context) {
             let currentPathPart = currentPathArr[0];
             let selection = editor.selection;
 
-            if (!/\.js$/.test(requirePathArr[requirePathArrLen - 1])) {
+            if (!/\.\w+$/.test(requirePathArr[requirePathArrLen - 1])) {
                 requirePathArr.push(requirePathArr[requirePathArrLen - 1] + ".js");
                 requirePathArrLen++;
             }
