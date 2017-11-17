@@ -27,7 +27,7 @@
         ],
         "keybindings":[
             {
-                "command": "extension.stealToWebpack",
+                "command": "extension.stealFormat",
                 "key": "alt+s",
                 "when": "editorTextFocus"
             }

@@ -33,7 +33,7 @@ function activate(context) {
         }
 
         if (inputText) {
-            retText = `"${inputText.replace(/.*src/, "src").replace(/\\/g, "/")}",`;
+            retText = `var temp = require("${inputText.replace(/.*src/, "src").replace(/\\/g, "/")}");`;
             editor.edit(function (editBuilder) {
                 editBuilder.delete(editor.selection);
             }).then(function () {
